@@ -174,7 +174,11 @@ def render_post_list(folder, posts):
     return template.render(posts=posts)
 
 
-post_folders = [f for f in os.listdir("posts") if os.path.isdir(f"posts/{f}")]
+post_folders = (
+    [f for f in os.listdir("posts") if os.path.isdir(f"posts/{f}")]
+    if os.path.isdir("posts")
+    else []
+)
 lists = {}
 
 for post_folder in post_folders:
