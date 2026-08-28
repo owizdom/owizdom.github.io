@@ -1,0 +1,188 @@
+{% from "components/button.html" import button %}
+{%
+  from
+  "components/fieldset.html" import fieldset
+%}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="icon" href="/favicon.svg" />
+  <title>{{ title }}</title>
+  <script>
+    (() => {
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/index.css" />
+  <style>
+    :root {
+      color-scheme: light;
+      --site-bg: #f6f4ee;
+      --site-text: #101114;
+      --site-muted: rgba(16, 17, 20, 0.68);
+      --site-border: rgba(0, 0, 0, 0.24);
+      --site-border-strong: rgba(0, 0, 0, 0.9);
+      --site-panel: #ffffff;
+      --site-panel-soft: #f1efe7;
+      --site-shadow: rgba(0, 0, 0, 0.12);
+      --site-shadow-strong: rgba(0, 0, 0, 0.5);
+      --site-link: #0f62fe;
+    }
+
+    html.dark {
+      color-scheme: dark;
+      --site-bg: #0d1016;
+      --site-text: #f5f7fb;
+      --site-muted: rgba(245, 247, 251, 0.72);
+      --site-border: rgba(255, 255, 255, 0.16);
+      --site-border-strong: rgba(255, 255, 255, 0.9);
+      --site-panel: #131823;
+      --site-panel-soft: #0f141d;
+      --site-shadow: rgba(0, 0, 0, 0.38);
+      --site-shadow-strong: rgba(255, 255, 255, 0.3);
+      --site-link: #8bb7ff;
+    }
+
+    body {
+      background: var(--site-bg);
+      color: var(--site-text);
+    }
+
+    .theme-toggle {
+      width: 2rem;
+      height: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel);
+      color: var(--site-text);
+      box-shadow: 3px 3px 0 var(--site-shadow-strong);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.84rem;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
+    html.dark .theme-toggle {
+      color: #ffffff;
+    }
+
+    .theme-toggle-glyph {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      background-color: currentColor;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      -webkit-mask-size: contain;
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z'/%3E%3C/svg%3E");
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z'/%3E%3C/svg%3E");
+    }
+
+    .theme-toggle-glyph.is-sun {
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='black'%3E%3Ccircle cx='12' cy='12' r='4.2'/%3E%3Crect x='11.3' y='1.8' width='1.4' height='4.1' rx='0.7'/%3E%3Crect x='11.3' y='18.1' width='1.4' height='4.1' rx='0.7'/%3E%3Crect x='18.1' y='11.3' width='4.1' height='1.4' rx='0.7'/%3E%3Crect x='1.8' y='11.3' width='4.1' height='1.4' rx='0.7'/%3E%3Crect x='16.85' y='4.25' width='1.4' height='4' rx='0.7' transform='rotate(45 17.55 6.25)'/%3E%3Crect x='5.75' y='15.35' width='1.4' height='4' rx='0.7' transform='rotate(45 6.45 17.35)'/%3E%3Crect x='15.35' y='16.85' width='4' height='1.4' rx='0.7' transform='rotate(45 17.35 17.55)'/%3E%3Crect x='4.25' y='5.75' width='4' height='1.4' rx='0.7' transform='rotate(45 6.25 6.45)'/%3E%3C/g%3E%3C/svg%3E");
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='black'%3E%3Ccircle cx='12' cy='12' r='4.2'/%3E%3Crect x='11.3' y='1.8' width='1.4' height='4.1' rx='0.7'/%3E%3Crect x='11.3' y='18.1' width='1.4' height='4.1' rx='0.7'/%3E%3Crect x='18.1' y='11.3' width='4.1' height='1.4' rx='0.7'/%3E%3Crect x='1.8' y='11.3' width='4.1' height='1.4' rx='0.7'/%3E%3Crect x='16.85' y='4.25' width='1.4' height='4' rx='0.7' transform='rotate(45 17.55 6.25)'/%3E%3Crect x='5.75' y='15.35' width='1.4' height='4' rx='0.7' transform='rotate(45 6.45 17.35)'/%3E%3Crect x='15.35' y='16.85' width='4' height='1.4' rx='0.7' transform='rotate(45 17.35 17.55)'/%3E%3Crect x='4.25' y='5.75' width='4' height='1.4' rx='0.7' transform='rotate(45 6.25 6.45)'/%3E%3C/g%3E%3C/svg%3E");
+    }
+  </style>
+  {% block head_extra %}{% endblock %}
+  <script>
+    /*to prevent Firefox FOUC, this must be here*/
+    let FF_FOUC_FIX;
+  </script>
+</head>
+<body>
+  <main
+    class="flex min-h-screen flex-col max-w-5xl mx-auto px-4 py-4 sm:py-8 leading-5 font-sans"
+  >
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+      <a href="/">
+        <h1 class="font-mono text-2xl font-bold">{{ name }}</h1>
+      </a>
+      <div
+        class="grid grid-cols-2 sm:flex gap-2 items-stretch sm:items-center w-full sm:w-auto my-1"
+      >
+        {% call button("https://github.com/owizdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
+          <div style="mask-image: url('/assets/github.svg');" class="icon"></div>
+          <span class="ms-1">GitHub</span>
+        {% endcall %}
+        {% call button("https://x.com/oxwizzdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
+          <div style="mask-image: url('/assets/x.svg');" class="icon"></div>
+          <span class="ms-1">X</span>
+        {% endcall %}
+        {% call button("https://t.me/oxwizzdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
+          <div style="mask-image: url('/assets/telegram.svg');" class="icon"></div>
+          <span class="ms-1">Telegram</span>
+        {% endcall %}
+        {% call button("https://parallelresearch.substack.com/", "w-full sm:w-32 h-9 sm:h-6 me-0 bg-[#FF6719] text-white", 'target="_blank" rel="noopener noreferrer"') %}
+          <div style="mask-image: url('/assets/substack.svg');" class="icon"></div>
+          <span class="ms-1">Substack</span>
+        {% endcall %}
+        <button
+          type="button"
+          id="theme-toggle"
+          class="theme-toggle col-span-2 justify-self-end sm:justify-self-auto"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
+        >
+          <span id="theme-toggle-icon" class="theme-toggle-glyph"></span>
+        </button>
+      </div>
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+  <script>
+    (() => {
+      const toggle = document.getElementById("theme-toggle");
+      const icon = document.getElementById("theme-toggle-icon");
+      const root = document.documentElement;
+
+      function syncThemeIcon() {
+        if (icon) {
+          icon.classList.toggle("is-sun", root.classList.contains("dark"));
+        }
+      }
+
+      if (toggle) {
+        syncThemeIcon();
+        toggle.addEventListener("click", () => {
+          root.classList.toggle("dark");
+          localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+          syncThemeIcon();
+        });
+      }
+    })();
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

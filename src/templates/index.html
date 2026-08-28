@@ -1,0 +1,651 @@
+{% extends "layout.html" %}
+{% from "components/fieldset.html" import fieldset %}
+{% from "components/button.html" import button %}
+
+{% block head_extra %}
+  <style>
+    .experience-card {
+      position: relative;
+      background: var(--site-panel);
+    }
+
+    .favorite-star {
+      position: absolute;
+      right: 0.6rem;
+      bottom: 0.55rem;
+      width: 1.35rem;
+      height: 1.35rem;
+      display: grid;
+      place-items: center;
+      background: color-mix(in srgb, var(--site-panel) 92%, transparent);
+      border: 1px solid var(--site-border);
+      border-radius: 999px;
+      box-shadow: 2px 2px 0 var(--site-shadow);
+      pointer-events: none;
+    }
+
+    .favorite-star::before {
+      content: "";
+      width: 0.9rem;
+      height: 0.9rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f2c94c' stroke='%23b58900' stroke-width='1.4' d='M12 2.2l2.8 5.68 6.27.91-4.54 4.43 1.07 6.25L12 16.5l-5.6 2.97 1.07-6.25L2.93 8.79l6.27-.91z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .profile-photo-wrap {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-photo-wrap img {
+      transition: opacity 0.2s ease;
+    }
+
+    .profile-photo-wrap .photo-alt {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    .profile-photo-wrap:hover .photo-main {
+      opacity: 0;
+    }
+
+    .profile-photo-wrap:hover .photo-alt {
+      opacity: 1;
+    }
+
+    .easter-egg-note {
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .profile-photo-wrap:hover .easter-egg-note {
+      opacity: 0.7;
+    }
+
+    .experience-inline-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 1.35rem;
+      padding: 0 0.45rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 2px 2px 0 var(--site-shadow);
+    }
+
+    .experience-inline-button:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
+    .proof-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 1.5rem;
+      padding: 0 0.5rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel-soft);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 2px 2px 0 var(--site-shadow);
+    }
+
+    .proof-chip:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
+    .experience-gallery {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    .experience-gallery.is-open {
+      display: flex;
+    }
+
+    .experience-gallery-panel {
+      width: min(920px, 100%);
+      max-height: min(80vh, 760px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--site-border);
+      background: var(--site-panel);
+      box-shadow: 6px 6px 0 var(--site-shadow);
+    }
+
+    .experience-gallery-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--site-border);
+      background: var(--site-panel-soft);
+    }
+
+    .experience-gallery-head h3,
+    .experience-gallery-head p {
+      margin: 0;
+    }
+
+    .experience-gallery-head h3 {
+      font-size: 1rem;
+    }
+
+    .experience-gallery-head p {
+      margin-top: 0.15rem;
+      font-size: 0.84rem;
+      opacity: 0.68;
+    }
+
+    .experience-gallery-close {
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel);
+      font-size: 1rem;
+      line-height: 1;
+      box-shadow: 2px 2px 0 var(--site-shadow);
+    }
+
+    .experience-gallery-close:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
+    .experience-gallery-grid {
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+      padding: 1rem;
+      background: var(--site-panel);
+    }
+
+    .experience-gallery-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      border: 1px solid var(--site-border);
+      background: var(--site-panel-soft);
+      padding: 0.6rem;
+    }
+
+    .experience-gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border: 1px solid var(--site-border);
+      margin: 0;
+    }
+
+    .experience-gallery-item p {
+      margin: 0;
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 700px) {
+      .experience-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .home-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .home-mini-card {
+      border: 1px solid var(--site-border);
+      background: var(--site-panel);
+      padding: 0.8rem;
+      box-shadow: 4px 4px 0 var(--site-shadow);
+    }
+
+    .home-mini-card p {
+      margin: 0;
+    }
+
+    .home-mini-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--site-muted);
+    }
+
+    .home-mini-value {
+      margin-top: 0.35rem;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .project-card {
+      position: relative;
+      background: var(--site-panel);
+    }
+
+    .project-card .favorite-star {
+      top: 0.55rem;
+      bottom: auto;
+    }
+
+    .project-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+
+    .project-thumb {
+      width: 96px;
+      height: 56px;
+      flex: 0 0 96px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+      align-self: flex-start;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 1.75rem;
+      padding: 0 0.65rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 3px 3px 0 var(--site-shadow-strong);
+    }
+
+    .project-link:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
+    @media (max-width: 900px) {
+      .home-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .home-grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .project-row {
+        gap: 0.55rem;
+      }
+
+      .project-thumb {
+        width: 88px;
+        height: 52px;
+        flex-basis: 88px;
+      }
+
+      .project-copy {
+        min-width: 0;
+      }
+
+      .project-copy p {
+        word-break: break-word;
+      }
+
+      .project-link {
+        height: 1.6rem;
+        padding: 0 0.55rem;
+        font-size: 0.68rem;
+        box-shadow: 2px 2px 0 var(--site-shadow);
+      }
+    }
+
+    .friends-list .friend-link {
+      position: relative;
+    }
+
+    .friend-note {
+      position: fixed;
+      z-index: 60;
+      max-width: 240px;
+      padding: 0.4rem 0.55rem;
+      background: var(--site-panel);
+      border: 1px solid var(--site-border-strong);
+      box-shadow: 3px 3px 0 var(--site-shadow);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: var(--site-text);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 100ms ease, transform 100ms ease;
+    }
+
+    .friend-note.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .friend-note {
+        display: none;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col gap-4">
+    {% call fieldset("cat ~/for-visitors.md") %}
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 shrink-0" aria-label="X and Substack">
+            <span
+              class="icon"
+              style="mask-image: url('/assets/x.svg'); -webkit-mask-image: url('/assets/x.svg'); width: 20px; height: 20px;"
+              aria-label="X"
+              title="X"
+            ></span>
+            <span
+              class="icon"
+              style="mask-image: url('/assets/substack.svg'); -webkit-mask-image: url('/assets/substack.svg'); width: 20px; height: 20px;"
+              aria-label="Substack"
+              title="Substack"
+            ></span>
+          </div>
+          <p class="text-base m-0">
+            came here from a thread, a forum post, or one of the reports? i put
+            the useful things in one place for you.
+          </p>
+        </div>
+        {% call button("/resources", "w-full sm:w-auto h-9 text-base font-bold me-0 sm:px-5") %}
+          <span>resources</span>
+        {% endcall %}
+      </div>
+    {% endcall %}
+    <!-- <WhoAmI /> -->
+    {% call fieldset("whoami") %}
+      <article class="text-lg prose-p:m-0 flex flex-col-reverse sm:block">
+        <div class="profile-photo-wrap mt-4 mx-auto w-56 max-w-full sm:float-right sm:mt-0 sm:ml-4 sm:mb-4 sm:mx-0 sm:w-52 md:w-60 lg:w-64">
+          <img
+            src="/assets/me.jpg"
+            alt="Portrait of Wisdom"
+            class="photo-main w-full object-cover"
+            loading="eager"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <p>
+            hi, i'm wisdom. i'm 19, and a research fellow at
+            <a href="https://freesystems.net/" target="_blank" rel="noopener noreferrer">stanford gsb's free systems lab</a>,
+            supervised by
+            <a href="https://www.andrewbenjaminhall.com/" target="_blank" rel="noopener noreferrer">professor andrew hall</a>.
+          </p>
+          <p>
+            these days i mostly think about ai/ml research. my background is in
+            crypto and distributed systems, and i still build in that space. i
+            like sitting between the two.
+          </p>
+          <p>
+            when i'm not reading papers or shipping code, i'm usually watching
+            anime, playing roblox, or trying (slowly) to get in the best shape
+            of my life.
+          </p>
+        </div>
+        <div class="clear-right"></div>
+      </article>
+    {% endcall %}
+    {% call fieldset("cat ~/random.md") %}
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-1">
+          <p class="text-base m-0">how it's going</p>
+          <p class="text-lg italic m-0">
+            "i haven't figured everything out yet. and honestly, i'm okay with that."
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          {% call button("/random/toolbox", "w-full h-9 text-base font-bold me-0 !justify-start") %}
+            <span>Toolbox</span>
+          {% endcall %}
+          {% call button("/random/wins", "w-full h-9 text-base font-bold me-0 !justify-start") %}
+            <span>Wins</span>
+          {% endcall %}
+        </div>
+      </div>
+    {% endcall %}
+    {% call fieldset("cat ~/experience.md") %}
+      <div id="experience-section" class="text-lg">
+        <p class="m-0">the more professional-looking part of this</p>
+        <div class="flex flex-col gap-4 mt-4">
+          {% for job in experience %}
+            <div class="experience-card border border-black/30 dark:border-white/25 p-3">
+              {% if job.starred %}<span class="favorite-star" aria-hidden="true"></span>{% endif %}
+              <div class="flex items-start gap-3">
+                {% if job.logo %}
+                  <img
+                    src="{{ job.logo }}"
+                    alt="{{ job.org }} logo"
+                    class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
+                    loading="lazy"
+                  />
+                {% else %}
+                  <div
+                    class="w-12 h-12 shrink-0 flex items-center justify-center border border-black/30 dark:border-white/25 font-mono font-bold text-sm"
+                    aria-hidden="true"
+                  >{{ job.mark }}</div>
+                {% endif %}
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <div>
+                      <p class="font-semibold text-base m-0">
+                        {% if job.href %}
+                          <a href="{{ job.href }}" target="_blank" rel="noopener noreferrer">{{ job.org }}</a>
+                        {% else %}{{ job.org }}{% endif %}
+                      </p>
+                      <p class="text-sm m-0">{{ job.role }}</p>
+                    </div>
+                  </div>
+                  {% if job.note %}<p class="text-sm mt-1 m-0">{{ job.note }}</p>{% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endcall %}
+    {% call fieldset("ls ~/projects.md") %}
+      <div id="projects-section" class="text-lg">
+        <p class="m-0">a few things i want people to actually click on</p>
+        <div class="flex flex-col gap-4 mt-4">
+          {% for p in projects %}
+            <article class="project-card border border-black/30 dark:border-white/25 p-2">
+              {% if p.starred %}<span class="favorite-star" aria-hidden="true"></span>{% endif %}
+              <div class="project-row">
+                <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
+                  <div>
+                    <p class="font-semibold text-base m-0">{{ p.name }}</p>
+                    <p class="text-sm mt-1 m-0">{{ p.desc }}</p>
+                  </div>
+                  <div class="project-links">
+                    {% for l in p.links %}
+                      <a href="{{ l.href }}" target="_blank" rel="noopener noreferrer" class="project-link">{{ l.label }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endcall %}
+    {% call fieldset("cat ~/friends.md") %}
+      <article>
+        cool people
+        <ul class="friends-list">
+          <!-- TODO(wisdom): add your own people here. pattern:
+          <li><a class="friend-link" data-note="short note on hover" href="URL" target="_blank" rel="noopener noreferrer">Name</a></li>
+          -->
+          <li><a class="friend-link" data-note="my supervisor at free systems lab" href="https://www.andrewbenjaminhall.com/" target="_blank" rel="noopener noreferrer">Andrew Hall</a></li>
+        </ul>
+      </article>
+    {% endcall %}
+    {% call fieldset("cat ~/links.md") %}
+      <article>
+        links!
+        <ul>
+          <li><a href="mailto:okechukwuwisdom016@gmail.com">Email</a></li>
+          <li><a href="https://github.com/owizdom" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://x.com/oxwizzdom" target="_blank" rel="noopener noreferrer">X</a></li>
+          <li><a href="https://t.me/oxwizzdom" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+          <li><a href="https://parallelresearch.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+          <li><a href="https://collective.flashbots.net/u/wisdom/summary" target="_blank" rel="noopener noreferrer">Flashbots Forum</a></li>
+        </ul>
+      </article>
+    {% endcall %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    (() => {
+      const openButtons = document.querySelectorAll("[data-open-gallery]");
+      const closeButtons = document.querySelectorAll("[data-close-gallery]");
+
+      function getGallery(name) {
+        return document.getElementById(`experience-gallery-${name}`);
+      }
+
+      function setGalleryOpen(name, isOpen) {
+        const gallery = getGallery(name);
+        if (!gallery) {
+          return;
+        }
+
+        gallery.classList.toggle("is-open", isOpen);
+        gallery.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        document.body.style.overflow = isOpen ? "hidden" : "";
+      }
+
+      openButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setGalleryOpen(button.dataset.openGallery, true);
+        });
+      });
+
+      closeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setGalleryOpen(button.dataset.closeGallery, false);
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          document.querySelectorAll(".experience-gallery.is-open").forEach((gallery) => {
+            gallery.classList.remove("is-open");
+            gallery.setAttribute("aria-hidden", "true");
+          });
+          document.body.style.overflow = "";
+        }
+      });
+
+      document.querySelectorAll(".experience-gallery").forEach((gallery) => {
+        gallery.addEventListener("click", (event) => {
+          if (event.target === gallery) {
+            gallery.classList.remove("is-open");
+            gallery.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+          }
+        });
+      });
+
+      const friendLinks = document.querySelectorAll(".friend-link[data-note]");
+      const canFriendHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (friendLinks.length && canFriendHover) {
+        const note = document.createElement("div");
+        note.className = "friend-note";
+        note.setAttribute("role", "tooltip");
+        document.body.appendChild(note);
+
+        let active = null;
+
+        function place(x, y) {
+          const offset = 14;
+          const rect = note.getBoundingClientRect();
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          let nx = x + offset;
+          let ny = y + offset;
+          if (nx + rect.width + 8 > vw) {
+            nx = x - rect.width - offset;
+          }
+          if (ny + rect.height + 8 > vh) {
+            ny = y - rect.height - offset;
+          }
+          note.style.left = `${Math.max(8, nx)}px`;
+          note.style.top = `${Math.max(8, ny)}px`;
+        }
+
+        friendLinks.forEach((link) => {
+          link.addEventListener("mouseenter", (event) => {
+            active = link;
+            note.textContent = link.dataset.note || "";
+            note.classList.add("is-visible");
+            place(event.clientX, event.clientY);
+          });
+          link.addEventListener("mousemove", (event) => {
+            if (active === link) {
+              place(event.clientX, event.clientY);
+            }
+          });
+          link.addEventListener("mouseleave", () => {
+            if (active === link) {
+              active = null;
+              note.classList.remove("is-visible");
+            }
+          });
+        });
+      }
+    })();
+  </script>
+{% endblock %}
+
+
