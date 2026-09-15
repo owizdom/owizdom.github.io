@@ -39,7 +39,7 @@ NOW = [
      "note": "Apps and tooling on EigenCompute (EigenBox, bob is alive, vanta) and contributions to Darkbloom, the private inference network on idle Macs."},
     {"org": "Sturbon", "href": "https://sturbon.vercel.app/", "role": "Founder",
      "years": "now", "logo": "/assets/experience/sturbon.svg",
-     "note": "Free counseling and mentors for African teenagers who feel alone. Live in two Nigerian states, and accepted into 2 funds whose pools total $42K+."},
+     "note": "Free counseling and mentors for African teenagers who feel alone. Accepted into 2 funds whose pools total $42K+."},
 ]
 
 BEFORE = [
@@ -113,7 +113,7 @@ PROJECTS = [
     {"name": "Sturbon", "mark": "S", "face": "rose",
      "tagline": "Someone who stays",
      "badge": "Accepted into 2 funds with $42K+ in pools",
-     "desc": "Free counseling and mentors for African teenagers who feel alone. Self-funded and live in two Nigerian states.",
+     "desc": "Free counseling and mentors for African teenagers who feel alone.",
      "install": None,
      "tags": ["Mental health", "Africa"],
      "links": [{"label": "Live", "href": "https://sturbon.vercel.app/"},
