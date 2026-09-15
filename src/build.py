@@ -12,8 +12,8 @@ import content
 
 first_name = "Wisdom"
 nickname = "wisdom"
-name = "Okechukwu Wisdom"
-title_name = "Okechukwu Wisdom"
+name = "Wisdom Okechukwu"
+title_name = "Wisdom Okechukwu"
 domain = "owizdom.github.io"
 generic_username = "owizdom"
 twitter_username = "@oxwizzdom"

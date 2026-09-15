@@ -8,7 +8,7 @@ scripts/refresh_claims.py before publishing.
 AS_OF = "2026-09-15"
 
 PROFILE = {
-    "name": "Okechukwu Wisdom",
+    "name": "Wisdom Okechukwu",
     "headline": "Research Engineer · 3 EigenCloud prizes · 4th of 71 on ecdsa.fail",
     "description": "Research Engineer in crypto (prediction markets) and AI (agents).",
     "bio": [
