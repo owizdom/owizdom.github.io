@@ -1,21 +1,24 @@
-{% from "components/button.html" import button %}
-{%
-  from
-  "components/fieldset.html" import fieldset
-%}
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
   <title>{{ title }}</title>
   <script>
     (() => {
-      const storedTheme = localStorage.getItem("theme");
-      if (storedTheme === "dark") {
+      let prefersDark = false;
+      try {
+        prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      } catch (e) {}
+      let s = null;
+      try {
+        s = localStorage.getItem("theme");
+      } catch (e) {}
+      if (s === "dark" || (!s && prefersDark)) {
         document.documentElement.classList.add("dark");
       }
     })();
@@ -24,14 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
     rel="stylesheet"
   />
 
@@ -41,28 +37,40 @@
       color-scheme: light;
       --site-bg: #f6f4ee;
       --site-text: #101114;
-      --site-muted: rgba(16, 17, 20, 0.68);
-      --site-border: rgba(0, 0, 0, 0.24);
+      --site-muted: rgba(16, 17, 20, 0.64);
+      --site-faint: rgba(16, 17, 20, 0.46);
+      --site-border: rgba(0, 0, 0, 0.1);
       --site-border-strong: rgba(0, 0, 0, 0.9);
       --site-panel: #ffffff;
-      --site-panel-soft: #f1efe7;
+      --site-panel-soft: #efece4;
       --site-shadow: rgba(0, 0, 0, 0.12);
       --site-shadow-strong: rgba(0, 0, 0, 0.5);
       --site-link: #0f62fe;
+      --site-accent: #0f62fe;
+      --site-underline: rgba(16, 17, 20, 0.28);
+      --site-hover: rgba(0, 0, 0, 0.05);
+      --site-nav-bg: rgba(255, 255, 255, 0.72);
+      --site-lift: rgba(16, 17, 20, 0.22);
     }
 
     html.dark {
       color-scheme: dark;
-      --site-bg: #0d1016;
-      --site-text: #f5f7fb;
-      --site-muted: rgba(245, 247, 251, 0.72);
-      --site-border: rgba(255, 255, 255, 0.16);
-      --site-border-strong: rgba(255, 255, 255, 0.9);
-      --site-panel: #131823;
-      --site-panel-soft: #0f141d;
-      --site-shadow: rgba(0, 0, 0, 0.38);
+      --site-bg: #0b0d10;
+      --site-text: #e8e6e1;
+      --site-muted: #9aa0a6;
+      --site-faint: #6b7178;
+      --site-border: rgba(255, 255, 255, 0.08);
+      --site-border-strong: rgba(255, 255, 255, 0.85);
+      --site-panel: #13161b;
+      --site-panel-soft: #101318;
+      --site-shadow: rgba(0, 0, 0, 0.4);
       --site-shadow-strong: rgba(255, 255, 255, 0.3);
       --site-link: #8bb7ff;
+      --site-accent: #8bb7ff;
+      --site-underline: rgba(232, 230, 225, 0.3);
+      --site-hover: rgba(255, 255, 255, 0.06);
+      --site-nav-bg: rgba(19, 22, 27, 0.72);
+      --site-lift: rgba(0, 0, 0, 0.6);
     }
 
     body {
@@ -74,29 +82,25 @@
       width: 2rem;
       height: 2rem;
       display: inline-flex;
+      flex: none;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--site-border-strong);
+      border: 1px solid var(--site-border);
+      border-radius: 999px;
       background: var(--site-panel);
-      color: var(--site-text);
-      box-shadow: 3px 3px 0 var(--site-shadow-strong);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.84rem;
+      color: var(--site-muted);
       line-height: 1;
+      transition: color 0.15s ease, background-color 0.15s ease;
     }
 
     .theme-toggle:hover {
-      background: var(--site-text);
-      color: var(--site-panel);
-    }
-
-    html.dark .theme-toggle {
-      color: #ffffff;
+      color: var(--site-text);
+      background: var(--site-hover);
     }
 
     .theme-toggle-glyph {
-      width: 1rem;
-      height: 1rem;
+      width: 0.95rem;
+      height: 0.95rem;
       display: block;
       background-color: currentColor;
       mask-repeat: no-repeat;
@@ -120,69 +124,126 @@
     let FF_FOUC_FIX;
   </script>
 </head>
-<body>
-  <main
-    class="flex min-h-screen flex-col max-w-5xl mx-auto px-4 py-4 sm:py-8 leading-5 font-sans"
-  >
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
-      <a href="/">
-        <h1 class="font-mono text-2xl font-bold">{{ name }}</h1>
-      </a>
-      <div
-        class="grid grid-cols-2 sm:flex gap-2 items-stretch sm:items-center w-full sm:w-auto my-1"
+<body class="site-body">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Primary">
+      <a
+        class="site-nav-home"
+        href="/"
+        {% if active_page is defined and active_page == "home" %}aria-current="page"{% endif %}
       >
-        {% call button("https://github.com/owizdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
-          <div style="mask-image: url('/assets/github.svg');" class="icon"></div>
-          <span class="ms-1">GitHub</span>
-        {% endcall %}
-        {% call button("https://x.com/oxwizzdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
-          <div style="mask-image: url('/assets/x.svg');" class="icon"></div>
-          <span class="ms-1">X</span>
-        {% endcall %}
-        {% call button("https://t.me/oxwizzdom", "w-full sm:w-32 h-9 sm:h-6 me-0", 'target="_blank" rel="noopener noreferrer"') %}
-          <div style="mask-image: url('/assets/telegram.svg');" class="icon"></div>
-          <span class="ms-1">Telegram</span>
-        {% endcall %}
-        {% call button("https://parallelresearch.substack.com/", "w-full sm:w-32 h-9 sm:h-6 me-0 bg-[#FF6719] text-white", 'target="_blank" rel="noopener noreferrer"') %}
-          <div style="mask-image: url('/assets/substack.svg');" class="icon"></div>
-          <span class="ms-1">Substack</span>
-        {% endcall %}
-        <button
-          type="button"
-          id="theme-toggle"
-          class="theme-toggle col-span-2 justify-self-end sm:justify-self-auto"
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          <span id="theme-toggle-icon" class="theme-toggle-glyph"></span>
-        </button>
-      </div>
-    </div>
+        <img
+          class="site-nav-avatar"
+          src="{{ profile.photo if profile is defined else '/assets/me.jpg' }}"
+          alt=""
+          width="28"
+          height="28"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="site-nav-name">{{ profile.name if profile is defined else name }}</span>
+      </a>
+      <span class="site-nav-sep" aria-hidden="true"></span>
+      <a
+        class="site-nav-link"
+        href="/about"
+        {% if active_page is defined and active_page == "about" %}aria-current="page"{% endif %}
+      >About</a>
+      <a class="site-nav-link" href="/#work">Selected Work</a>
+    </nav>
+  </header>
+
+  <main id="main" class="{% block main_class %}site-main site-legacy{% endblock %}">
     {% block content %}{% endblock %}
   </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="site-footer-inner">
+        <p class="site-footer-copy">&copy; 2026, {{ profile.name if profile is defined else name }}</p>
+        <div class="site-footer-end">
+          {% if profile is defined %}
+            <ul class="footer-links">
+              {% for link in profile.links %}
+                <li>
+                  <a
+                    href="{{ link.href }}"
+                    {% if link.href.startswith("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
+                  >{{ link.label }}<span class="footer-arrow" aria-hidden="true">&#8599;</span></a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <button
+            type="button"
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Dark mode"
+            aria-pressed="false"
+            title="Toggle dark mode"
+          >
+            <span id="theme-toggle-icon" class="theme-toggle-glyph" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   {% block scripts %}{% endblock %}
   <script>
     (() => {
+      const root = document.documentElement;
       const toggle = document.getElementById("theme-toggle");
       const icon = document.getElementById("theme-toggle-icon");
-      const root = document.documentElement;
 
-      function syncThemeIcon() {
-        if (icon) {
-          icon.classList.toggle("is-sun", root.classList.contains("dark"));
+      function stored() {
+        try {
+          return localStorage.getItem("theme");
+        } catch (e) {
+          return null;
         }
       }
 
+      function sync() {
+        const dark = root.classList.contains("dark");
+        if (icon) {
+          icon.classList.toggle("is-sun", dark);
+        }
+        if (toggle) {
+          toggle.setAttribute("aria-pressed", dark ? "true" : "false");
+        }
+      }
+
+      sync();
+
       if (toggle) {
-        syncThemeIcon();
         toggle.addEventListener("click", () => {
-          root.classList.toggle("dark");
-          localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
-          syncThemeIcon();
+          const dark = root.classList.toggle("dark");
+          try {
+            localStorage.setItem("theme", dark ? "dark" : "light");
+          } catch (e) {}
+          sync();
         });
       }
+
+      try {
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        const follow = (event) => {
+          const s = stored();
+          if (s !== "dark" && s !== "light") {
+            root.classList.toggle("dark", event.matches);
+            sync();
+          }
+        };
+        if (media.addEventListener) {
+          media.addEventListener("change", follow);
+        } else if (media.addListener) {
+          media.addListener(follow);
+        }
+      } catch (e) {}
     })();
   </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>

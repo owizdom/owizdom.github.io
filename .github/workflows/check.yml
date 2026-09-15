@@ -1,0 +1,33 @@
+name: Check
+
+# Shadow gate: runs on every PR and reports honestly, but no branch protection
+# requires it yet. Promote it to required once it has stayed green.
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install webp tools
+        run: sudo apt-get update && sudo apt-get install -y webp
+
+      - run: pnpm install
+      - run: uv sync
+      - run: uv run pytest -q -p no:cacheprovider
