@@ -10,9 +10,9 @@ AS_OF = "2026-09-15"
 PROFILE = {
     "name": "Okechukwu Wisdom",
     "headline": "Research Engineer · 3 EigenCloud prizes · 4th of 71 on ecdsa.fail",
-    "description": "Research Engineer working on AI agents and the crypto rails they run on.",
+    "description": "Research Engineer in crypto (prediction markets) and AI (agents).",
     "bio": [
-        "Named author on an arXiv quantum computing paper at 19. I work on AI agents and the crypto rails they run on.",
+        "Named author on an arXiv quantum computing paper at 19. Most of my engineering is in crypto (prediction markets) and AI (agents).",
         "At Free Systems Lab I research AI agents, especially swarms of agents, and follow whatever questions pull me in. I built Model Card Explorer there, which found that 90% of frontier benchmarks are reported by only one lab. On ecdsa.fail I placed 4th of 71 solvers by total score reduction, and that work put my name on the paper.",
         "Things I've shipped: bob is alive, an AI that pays for its own compute inside a TEE, took 1st and $3,000 in the EigenCompute track at the Synthesis Hackathon. Mind Agent and EigenBox, two developer tools with 1,095 npm downloads. A zk-SNARK shielded pool design for Plasma whose launch posts passed 80K views.",
         "Open to joining Eigen Labs as an engineer anytime I get an offer letter. Also: on the side I'm building Sturbon, free counseling and mentors for African teenagers, accepted into 2 funds whose pools total $42K+.",
