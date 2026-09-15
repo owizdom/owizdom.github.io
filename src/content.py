@@ -15,7 +15,7 @@ PROFILE = {
         "Named author on an arXiv quantum computing paper at 19. I work on AI agents and the crypto rails they run on.",
         "At Free Systems Lab I research AI agents, especially swarms of agents, and follow whatever questions pull me in. I built Model Card Explorer there, which found that 90% of frontier benchmarks are reported by only one lab. On ecdsa.fail I placed 4th of 71 solvers by total score reduction, and that work put my name on the paper.",
         "Things I've shipped: bob is alive, an AI that pays for its own compute inside a TEE, took 1st and $3,000 in the EigenCompute track at the Synthesis Hackathon. Mind Agent and EigenBox, two developer tools with 1,095 npm downloads. A zk-SNARK shielded pool design for Plasma whose launch posts passed 80K views.",
-        "Open to joining Eigen Labs as an engineer anytime I get an offer letter. Also: on the side I'm building Sturbon, free counseling and mentors for African teenagers, curated into 2 Artizen funds whose pools total $42K+.",
+        "Open to joining Eigen Labs as an engineer anytime I get an offer letter. Also: on the side I'm building Sturbon, free counseling and mentors for African teenagers, accepted into 2 funds whose pools total $42K+.",
     ],
     "location": "Kigali, RW",
     "photo": "/assets/me.jpg",
@@ -39,7 +39,7 @@ NOW = [
      "note": "Apps and tooling on EigenCompute (EigenBox, bob is alive, vanta) and contributions to Darkbloom, the private inference network on idle Macs."},
     {"org": "Sturbon", "href": "https://sturbon.vercel.app/", "role": "Founder",
      "years": "now", "logo": "/assets/experience/sturbon.svg",
-     "note": "Free counseling and mentors for African teenagers who feel alone. Live in two Nigerian states."},
+     "note": "Free counseling and mentors for African teenagers who feel alone. Live in two Nigerian states, and accepted into 2 funds whose pools total $42K+."},
 ]
 
 BEFORE = [
@@ -112,12 +112,12 @@ PROJECTS = [
                {"label": "npm", "href": "https://www.npmjs.com/package/@parallel-labs/mind-agent"}]},
     {"name": "Sturbon", "mark": "S", "face": "rose",
      "tagline": "Someone who stays",
-     "badge": "Curated into 2 Artizen Season 7 funds",
+     "badge": "Accepted into 2 funds with $42K+ in pools",
      "desc": "Free counseling and mentors for African teenagers who feel alone. Self-funded and live in two Nigerian states.",
      "install": None,
      "tags": ["Mental health", "Africa"],
      "links": [{"label": "Live", "href": "https://sturbon.vercel.app/"},
-               {"label": "Artizen", "href": "https://artizen.fund/index/p/sturbon-mental-health-for-african-youth?season=7"}]},
+               {"label": "Fund page", "href": "https://artizen.fund/index/p/sturbon-mental-health-for-african-youth?season=7"}]},
     {"name": "Model Card Explorer", "mark": "M", "face": "green",
      "tagline": "Who discloses which benchmarks",
      "badge": "90% of benchmarks reported by one lab",
