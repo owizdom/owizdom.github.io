@@ -8,10 +8,12 @@ import frontmatter
 from bs4 import BeautifulSoup, element
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+import content
+
 first_name = "Wisdom"
 nickname = "wisdom"
-name = "Wisdom"
-title_name = "Wisdom"
+name = "Okechukwu Wisdom"
+title_name = "Okechukwu Wisdom"
 domain = "owizdom.github.io"
 generic_username = "owizdom"
 twitter_username = "@oxwizzdom"
@@ -204,7 +206,7 @@ def img_tag_rule(img_tag: element.Tag):
 seo_common = {
     "url": url,
     "title": title_name,
-    "description": f"{title_name}'s personal website",
+    "description": content.PROFILE["description"],
     "image": urljoin(url, "/assets/me.jpg"),
 }
 
@@ -221,73 +223,18 @@ twitter = twitter_tags({**seo_common, "card": "summary"})
 seotags = og + twitter
 
 # ---------------------------------------------------------------- site content
-experience = [
-    {"logo": "/assets/experience/freesystems.png",
-     "org": "Free Systems Lab, Stanford GSB", "role": "Member of Technical Staff",
-     "note": "working on the politics of superintelligence",
-     "href": "https://freesystems.net/", "starred": True},
-    {"logo": "/assets/experience/coinbase.png",
-     "org": "Coinbase", "role": "User Research",
-     "note": "working with product & engineering teams",
-     "href": "https://www.coinbase.com/", "starred": True},
-    {"logo": "/assets/experience/bento.png",
-     "org": "Bento", "role": "Software Engineer",
-     "note": "building the sdk, resolution, and agentic layers for prediction markets",
-     "href": "https://bento.fun", "starred": True},
-    {"logo": "/assets/experience/eigenlabs.png",
-     "org": "EigenLabs", "role": "Open-Source Contributor",
-     "note": "protocol tooling and client work",
-     "href": "https://www.eigenlabs.org", "starred": False},
-    {"logo": "/assets/experience/astral.png",
-     "org": "Astral Protocol", "role": "Research Engineer",
-     "note": "building toward a decentralized geospatial web",
-     "href": "https://astral.global", "starred": False},
-    {"logo": "/assets/experience/shoal.png",
-     "org": "Shoal Research", "role": "Researcher",
-     "note": "deep dives and thesis-driven reports",
-     "href": "https://shoal.gg/", "starred": False},
-    {"logo": "/assets/experience/decentralised.png",
-     "org": "decentralised.co", "role": "Researcher",
-     "note": "tools and charts serving 30k+ users",
-     "href": "https://www.decentralised.co/", "starred": False},
-    {"logo": "/assets/experience/parallel.png",
-     "org": "Parallel Research", "role": "Head of Research",
-     "note": "long-form writing on solana, plasma, and zk",
-     "href": "https://parallelresearch.substack.com/", "starred": True},
-]
-
-projects = [
-    {"name": "swarm mind", "starred": True,
-     "desc": "An autonomous prediction oracle. Three AI agents independently analyze crypto "
-             "markets, seal their predictions with TEE hardware keys before seeing each "
-             "other's work, then reveal simultaneously to produce a verifiable consensus.",
-     "links": [{"label": "GitHub", "href": "https://github.com/owizdom/swarm_mind_for_PredMarkets"}]},
-    {"name": "bobIsAlive", "starred": True,
-     "desc": "An autonomous digital organism that must earn to survive. It reads biology news, "
-             "makes art, completes tasks, trades on DeFi and stakes STRK, all inside an "
-             "EigenCompute TEE. If its balance hits zero, it dies. No human bailout.",
-     "links": [{"label": "GitHub", "href": "https://github.com/owizdom/bobIsAlive"},
-               {"label": "Site", "href": "https://bob-is-alive.vercel.app"}]},
-    {"name": "model card explorer", "starred": False,
-     "desc": "Benchmark-disclosure transparency across published AI model cards.",
-     "links": [{"label": "GitHub", "href": "https://github.com/owizdom/ai-research-model-cards"},
-               {"label": "Site", "href": "https://modelcards.net"}]},
-    {"name": "sticky fingers", "starred": False,
-     "desc": "Does payment-authorization architecture contain a misbehaving AI agent? A "
-             "controlled experiment across today's agentic-payment protocols, with the model, "
-             "prompt, task, tools and attack held constant so the architecture is the only "
-             "thing that varies.",
-     "links": [{"label": "GitHub", "href": "https://github.com/owizdom/sticky-Fingers"}]},
-]
-
-
+# Everything the pages say lives in content.py, next to the sources for its numbers.
 index_soup = render_template(
     "index.html",
     lists=lists,
     name=name,
     title=title_name,
-    experience=experience,
-    projects=projects,
+    profile=content.PROFILE,
+    now=content.NOW,
+    projects=content.PROJECTS,
+    before=content.BEFORE,
+    writing=content.WRITING,
+    recognition=content.RECOGNITION,
 )
 for item in seotags:
     index_soup.head.append(bs(item))
@@ -295,6 +242,25 @@ for item in seotags:
 write_output(index_soup.encode_contents().decode("utf-8"), "index.html")
 
 custom_pages = [
+    {
+        "template": "about.html",
+        "output": ("about.html",),
+        "title": f"{title_name} | About",
+        "context": {
+            "profile": content.PROFILE,
+            "experience": content.EXPERIENCE,
+            "stack": content.STACK,
+            "writing": content.WRITING,
+            "recognition": content.RECOGNITION,
+        },
+        "seo": {
+            **seo_common,
+            "url": urljoin(url, "/about"),
+            "title": f"{title_name} | About",
+            "description": f"{title_name}: work experience, stack and writing",
+            "image": urljoin(url, "/assets/me.jpg"),
+        },
+    },
     {
         "template": "random/wins.html",
         "output": ("random", "wins.html"),
@@ -334,7 +300,8 @@ custom_pages = [
 ]
 
 for page in custom_pages:
-    soup = render_template(page["template"], name=name, title=page["title"])
+    context = {"profile": content.PROFILE, **page.get("context", {})}
+    soup = render_template(page["template"], name=name, title=page["title"], **context)
     page_tags = og_tags({**page["seo"], "type": "website"}) + twitter_tags(page["seo"])
 
     for item in page_tags:

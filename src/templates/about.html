@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% set active_page = "about" %}
+
+{% macro ext(href) -%}
+  {%- if href and (href.startswith("https://") or href.startswith("http://")) %} target="_blank" rel="noopener noreferrer"{% endif -%}
+{%- endmacro %}
+
+{% block main_class %}site-main{% endblock %}
+
+{% block content %}
+  <div class="wrap">
+    <div class="col about">
+      <header class="about-head">
+        <h1 class="about-title">About</h1>
+      </header>
+
+      <div class="hero-bio about-bio" data-claims>
+        {% for paragraph in profile.bio %}
+          <p>{{ paragraph }}</p>
+        {% endfor %}
+      </div>
+
+      <section class="about-block" aria-labelledby="experience-title">
+        <h2 id="experience-title" class="about-label">Work experience</h2>
+        <ul class="exp-list" data-claims>
+          {% for e in experience %}
+            <li class="exp-row">
+              <div class="exp-main">
+                <p class="exp-role">{{ e.role }}</p>
+                <p class="exp-org" data-literal>{{ e.org }}</p>
+              </div>
+              {% if e.years %}<time class="exp-years">{{ e.years }}</time>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="about-block" aria-labelledby="stack-title">
+        <h2 id="stack-title" class="about-label">Stack</h2>
+        <div class="stack-panel">
+          {% for group in stack %}
+            <div class="stack-group">
+              <h3 class="stack-title">{{ group.group }}</h3>
+              <ul class="chips">
+                {% for item in group["items"] %}<li class="chip">{{ item }}</li>{% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="about-block" aria-labelledby="about-writing-title">
+        <h2 id="about-writing-title" class="about-label">Writing</h2>
+        <ul class="list" data-claims>
+          {% for w in writing %}
+            <li class="list-item">
+              <p class="list-head">
+                {% if w.href %}
+                  <a class="list-title" href="{{ w.href }}"{{ ext(w.href) }} data-literal>{{ w.title }}</a>
+                {% else %}
+                  <span class="list-title" data-literal>{{ w.title }}</span>
+                {% endif %}
+              </p>
+              <p class="list-meta">{{ w.venue }}{% if w.when %}<span class="dot" aria-hidden="true">&middot;</span><time>{{ w.when }}</time>{% endif %}</p>
+              {% if w.note %}<p class="list-note">{{ w.note }}</p>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="about-block" aria-labelledby="about-recognition-title">
+        <h2 id="about-recognition-title" class="about-label">Recognition</h2>
+        <ul class="list" data-claims>
+          {% for r in recognition %}
+            <li class="list-item">
+              <p class="list-head">
+                {% if r.href %}
+                  <a class="list-title" href="{{ r.href }}"{{ ext(r.href) }}>{{ r.text }}</a>
+                {% else %}
+                  <span class="list-title">{{ r.text }}</span>
+                {% endif %}
+              </p>
+              <p class="list-meta">{{ r.venue }}{% if r.when %}<span class="dot" aria-hidden="true">&middot;</span><time>{{ r.when }}</time>{% endif %}</p>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+    </div>
+  </div>
+{% endblock %}
