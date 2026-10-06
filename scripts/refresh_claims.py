@@ -2,7 +2,7 @@
 
 Usage: uv run python scripts/refresh_claims.py
 
-Not covered, re-read by hand in a browser: X view counts, Artizen rank, hackathon placings.
+Not covered, re-read by hand in a browser: X view counts, hackathon placings.
 """
 
 import json
