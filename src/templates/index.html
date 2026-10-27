@@ -94,7 +94,6 @@
 <body>
   <main class="page">
     <h1>{{ profile.name }}</h1>
-    <p id="headline">{{ profile.headline }}</p>
 
     <img class="photo" src="{{ profile.photo }}" alt="{{ profile.name }}" width="120" height="120" loading="eager" />
 
@@ -104,16 +103,15 @@
       {% for link in profile.links if link.href.startswith("mailto:") %}
         <p>Email: <a href="{{ link.href }}">{{ link.href[7:] }}</a></p>
       {% endfor %}
-      {% for link in profile.links if not link.href.startswith("mailto:") %}
+      {% for link in profile.links if link.label in ("GitHub", "LinkedIn", "X") %}
         <p><a href="{{ link.href }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a></p>
       {% endfor %}
-      <p><a href="/about">Writing and full CV</a></p>
     </section>
 
     <section aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
 
-      <div data-claims>
+      <div id="bio" data-claims>
         {% for paragraph in profile.bio %}
           <p>{{ paragraph }}</p>
         {% endfor %}

@@ -114,8 +114,13 @@ def test_t5_index_is_a_plain_document(build, dist):
     assert not soup.select('link[href*="fonts.googleapis.com"]'), "web fonts still loaded"
     photo = soup.select_one("img.photo")
     assert photo is not None and photo.get("width") == "120", photo
-    assert soup.find(id="contact") is not None
-    assert soup.select_one('#contact a[href="/about"]') is not None, "About page unreachable"
+    contact = soup.find(id="contact")
+    assert contact is not None
+    labels = [a.get_text(strip=True) for a in contact.find_all("a")]
+    assert labels[1:] == ["GitHub", "LinkedIn", "X"], labels
+    assert "Kigali" in contact.get_text() and "RW" not in contact.get_text()
+    assert soup.find(id="headline") is None, "headline line is gone"
+    assert len(soup.select("#bio p")) == 3, "About is three short paragraphs"
 
 
 def test_t5_about_sections(build, dist):
@@ -124,11 +129,11 @@ def test_t5_about_sections(build, dist):
         assert wanted in titles, titles
 
 
-def test_t6_headline_and_lab_title(build, dist):
+def test_t6_researcher_and_lab_title(build, dist):
     soup = load(dist, "index.html")
-    headline = soup.find(id="headline")
-    assert headline is not None, "no #headline"
-    assert "Research Engineer" in headline.get_text(" ", strip=True)
+    bio = soup.find(id="bio")
+    assert bio is not None, "no #bio"
+    assert bio.get_text(" ", strip=True).startswith("I am a researcher and engineer."), bio.get_text()
     now = soup.find(id="now")
     assert now is not None, "no #now"
     rows = [r.get_text(" ", strip=True) for r in now.select("[data-role-row]")]
@@ -204,3 +209,4 @@ def test_t9_links_are_well_formed(build, dist):
             elif url.scheme not in ("https", "http") or not url.netloc or " " in href:
                 bad.append(f"{page}: {href}")
     assert not bad
+
