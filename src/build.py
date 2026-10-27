@@ -207,7 +207,7 @@ seo_common = {
     "url": url,
     "title": title_name,
     "description": content.PROFILE["description"],
-    "image": urljoin(url, "/assets/me.jpg"),
+    "image": urljoin(url, content.PROFILE["photo"]),
 }
 
 og = og_tags(
@@ -258,7 +258,7 @@ custom_pages = [
             "url": urljoin(url, "/about"),
             "title": f"{title_name} | About",
             "description": f"{title_name}: work experience, stack and writing",
-            "image": urljoin(url, "/assets/me.jpg"),
+            "image": urljoin(url, content.PROFILE["photo"]),
         },
     },
     {
@@ -270,7 +270,7 @@ custom_pages = [
             "url": urljoin(url, "/random/wins"),
             "title": f"{title_name} | Wins",
             "description": f"{title_name}'s trophy case of wins and milestones",
-            "image": urljoin(url, "/assets/me.jpg"),
+            "image": urljoin(url, content.PROFILE["photo"]),
         },
     },
     {
@@ -282,7 +282,7 @@ custom_pages = [
             "url": urljoin(url, "/random/toolbox"),
             "title": f"{title_name} | Toolbox",
             "description": f"{title_name}'s stack turned into a tiny tetris-style toolbox game",
-            "image": urljoin(url, "/assets/me.jpg"),
+            "image": urljoin(url, content.PROFILE["photo"]),
         },
     },
     {
@@ -294,7 +294,7 @@ custom_pages = [
             "url": urljoin(url, "/resources"),
             "title": f"{title_name} | Resources",
             "description": f"{title_name}'s shelf of resources for visitors from videos and posts",
-            "image": urljoin(url, "/assets/me.jpg"),
+            "image": urljoin(url, content.PROFILE["photo"]),
         },
     },
 ]
