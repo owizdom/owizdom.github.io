@@ -18,7 +18,7 @@ PROFILE = {
         "Open to joining Eigen Labs as an engineer anytime I get an offer letter.",
     ],
     "location": "Kigali, RW",
-    "photo": "/assets/me.jpg",
+    "photo": "/assets/misaki.jpg",
     "links": [
         {"label": "GitHub", "href": "https://github.com/owizdom"},
         {"label": "X", "href": "https://x.com/oxwizzdom"},
