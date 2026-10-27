@@ -42,25 +42,20 @@ owizdom.github.io
 ├── tailwind.config.js
 ├── pyproject.toml                # Python deps
 ├── build.sh                      # prod build, called by pnpm build
-├── posts
-│   └── projects                  # markdown project posts
 ├── public
 │   └── assets/                   # static assets, icons, images
 └── src
-    ├── build.py                  # main entrypoint; site content lives here
+    ├── build.py                  # main entrypoint, renders the one page
+    ├── content.py                # everything the page says, plus the claims ledger
     ├── dev-server.py             # live reload server
     ├── index.css                 # tailwind imports
     ├── optimize_images.py
     └── templates
-        ├── components/           # button, fieldset
-        ├── index.html            # landing page
-        ├── layout.html           # base layout (header, footer, theme)
-        ├── resources.html
-        └── random/               # lore, toolbox, wins
+        └── index.html            # the whole site, one plain page
 ```
 
 ## Editing content
 
-Most of the landing page is data-driven from `src/build.py`: the `experience`,
-`projects`, and `writing` lists near the bottom of the file. Identity (name,
-domain, handles) is the block at the top.
+The page is data-driven from `src/content.py`: `PROFILE`, `NOW`, `BEFORE`,
+`PROJECTS` and `RECOGNITION`. Identity (name, domain, handles) is the block at
+the top of `src/build.py`.

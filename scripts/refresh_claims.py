@@ -63,12 +63,6 @@ def shoal_bylined_reports():
     return f"{len(mine)} bylined wizzdom of {len(posts)} posts ({mine[0]} to {mine[-1]})" if mine else "0 bylined"
 
 
-def flashbots_forum():
-    topics = fetch_json("https://collective.flashbots.net/topics/created-by/wisdom.json")["topic_list"]["topics"]
-    pbs = next((t["views"] for t in topics if t["slug"] == "the-6-99-without-pbs"), "not found")
-    return f"{sum(t['views'] for t in topics)} views across {len(topics)} topics; the-6-99-without-pbs {pbs}"
-
-
 def modelcards():
     text = re.sub(r"<[^>]+>", " ", fetch("https://modelcards.net"))
     text = " ".join(text.split())
@@ -113,7 +107,6 @@ CHECKS = [
     ("shoal-reports", shoal_bylined_reports),
     ("shoal-subscribers", lambda: substack_subscribers("https://www.shoal.gg")),
     ("decentralised-subscribers", lambda: substack_subscribers("https://www.decentralised.co")),
-    ("flashbots-forum-views", flashbots_forum),
     ("modelcards", modelcards),
     ("ecdsafail-rank", ecdsafail),
 ]

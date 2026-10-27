@@ -3,8 +3,6 @@ import argparse
 from shutil import rmtree
 from urllib.parse import urljoin
 
-import mistune
-import frontmatter
 from bs4 import BeautifulSoup, element
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -72,26 +70,6 @@ def render_template(template_name, **context):
     return soup
 
 
-make_html: mistune.Markdown = mistune.create_markdown(
-    escape=False,
-    plugins=["strikethrough", "footnotes", "table", "speedup", "math"],
-)
-
-
-def get_post(folder, file):
-    obj = frontmatter.load(f"posts/{folder}/{file}")
-    html = make_html(obj.content)
-
-    obj.content = html
-    obj["slug"] = file.replace(".md", "")
-    obj["href"] = f"/{folder}/{obj['slug']}"
-
-    if "order" not in obj:
-        obj["order"] = 0
-
-    return obj
-
-
 def og_tags(data: dict):
     tags = []
     for key, value in data.items():
@@ -130,72 +108,6 @@ def twitter_tags(data: dict):
     return tags
 
 
-def post_seotags(folder, post):
-    items_common = {
-        "url": urljoin(url, f"/{folder}/{post['slug']}"),
-    }
-
-    if "title" in post:
-        items_common["title"] = f"{name} | {post['title']}"
-
-    if "summary" in post:
-        items_common["description"] = post["summary"]
-
-    if "coverImage" in post:
-        items_common["image"] = urljoin(url, post["coverImage"])
-
-    items_og = {
-        **items_common,
-        "type": "website",
-    }
-
-    items_twitter = {
-        **items_common,
-        "card": "summary_large_image",
-        "domain": domain,
-    }
-
-    return og_tags(items_og) + twitter_tags(items_twitter)
-
-
-def render_post(folder, post):
-    template = env.get_template(f"posts/{folder}/page.html")
-    rendered = template.render(post=post, title=f"{name} | {post['title']}", name=name)
-
-    soup = bs(rendered)
-    og = post_seotags(folder, post)
-
-    for item in og:
-        soup.head.append(bs(item))
-
-    return soup.encode_contents().decode("utf-8")
-
-
-def render_post_list(folder, posts):
-    template = env.get_template(f"posts/{folder}/list.html")
-    return template.render(posts=posts)
-
-
-post_folders = (
-    [f for f in os.listdir("posts") if os.path.isdir(f"posts/{f}")]
-    if os.path.isdir("posts")
-    else []
-)
-lists = {}
-
-for post_folder in post_folders:
-    post_files = os.listdir(f"posts/{post_folder}")
-    posts = [get_post(post_folder, f) for f in post_files]
-    posts = sorted(posts, key=lambda x: x["order"])
-
-    for post in posts:
-        write_output(
-            render_post(post_folder, post), post_folder, f"{post['slug']}.html"
-        )
-
-    lists[post_folder] = render_post_list(post_folder, posts)
-
-
 def img_tag_rule(img_tag: element.Tag):
     if not img_tag.has_attr("decoding"):
         img_tag["decoding"] = "async"
@@ -226,85 +138,15 @@ seotags = og + twitter
 # Everything the pages say lives in content.py, next to the sources for its numbers.
 index_soup = render_template(
     "index.html",
-    lists=lists,
     name=name,
     title=title_name,
     profile=content.PROFILE,
     now=content.NOW,
     projects=content.PROJECTS,
     before=content.BEFORE,
-    writing=content.WRITING,
     recognition=content.RECOGNITION,
 )
 for item in seotags:
     index_soup.head.append(bs(item))
 
 write_output(index_soup.encode_contents().decode("utf-8"), "index.html")
-
-custom_pages = [
-    {
-        "template": "about.html",
-        "output": ("about.html",),
-        "title": f"{title_name} | About",
-        "context": {
-            "profile": content.PROFILE,
-            "experience": content.EXPERIENCE,
-            "stack": content.STACK,
-            "writing": content.WRITING,
-            "recognition": content.RECOGNITION,
-        },
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/about"),
-            "title": f"{title_name} | About",
-            "description": f"{title_name}: work experience, stack and writing",
-            "image": urljoin(url, content.PROFILE["photo"]),
-        },
-    },
-    {
-        "template": "random/wins.html",
-        "output": ("random", "wins.html"),
-        "title": f"{title_name} | Wins",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/wins"),
-            "title": f"{title_name} | Wins",
-            "description": f"{title_name}'s trophy case of wins and milestones",
-            "image": urljoin(url, content.PROFILE["photo"]),
-        },
-    },
-    {
-        "template": "random/toolbox.html",
-        "output": ("random", "toolbox.html"),
-        "title": f"{title_name} | Toolbox",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/toolbox"),
-            "title": f"{title_name} | Toolbox",
-            "description": f"{title_name}'s stack turned into a tiny tetris-style toolbox game",
-            "image": urljoin(url, content.PROFILE["photo"]),
-        },
-    },
-    {
-        "template": "resources.html",
-        "output": ("resources.html",),
-        "title": f"{title_name} | Resources",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/resources"),
-            "title": f"{title_name} | Resources",
-            "description": f"{title_name}'s shelf of resources for visitors from videos and posts",
-            "image": urljoin(url, content.PROFILE["photo"]),
-        },
-    },
-]
-
-for page in custom_pages:
-    context = {"profile": content.PROFILE, **page.get("context", {})}
-    soup = render_template(page["template"], name=name, title=page["title"], **context)
-    page_tags = og_tags({**page["seo"], "type": "website"}) + twitter_tags(page["seo"])
-
-    for item in page_tags:
-        soup.head.append(bs(item))
-
-    write_output(soup.encode_contents().decode("utf-8"), *page["output"])
