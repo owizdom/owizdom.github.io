@@ -132,6 +132,8 @@ def test_t6_researcher_and_lab_title(build, dist):
     bio = soup.find(id="bio")
     assert bio is not None, "no #bio"
     assert bio.get_text(" ", strip=True).startswith("I am a researcher and engineer."), bio.get_text()
+    assert "where I work on AI safety research." in bio.get_text(" ", strip=True), bio.get_text()
+    assert "Model Card Explorer" not in bio.get_text(), "bio still names Model Card Explorer"
     now = soup.find(id="now")
     assert now is not None, "no #now"
     rows = [r.get_text(" ", strip=True) for r in now.select("[data-role-row]")]
