@@ -30,38 +30,37 @@ PROFILE = {
 
 NOW = [
     {"org": "Free Systems Lab", "href": "https://freesystems.net/", "role": "Research Fellow",
-     "years": "2026 to now", "logo": "/assets/experience/freesystems.png",
+     "years": "2026 to now",
      "note": "Working on AI agents, including Sticky Fingers, a controlled study of whether payment rails stop a hijacked agent from moving money. Built Model Card Explorer and the Free Systems Model Cards."},
     {"org": "Eigen Labs (EigenCloud)", "href": "https://www.eigenlabs.org", "role": "Open-source contributor",
-     "years": "2026 to now", "logo": "/assets/experience/eigenlabs.png",
+     "years": "2026 to now",
      "note": "Built apps and tooling on EigenCompute (EigenBox, bob is alive, vanta) and contributed to Darkbloom, the private inference network on idle Macs."},
 ]
 
 BEFORE = [
     {"org": "Sturbon", "href": None, "role": "Founder",
-     "years": "2023 to Oct 2026", "logo": "/assets/experience/sturbon.svg",
+     "years": "2023 to Oct 2026",
      "note": "Ran free counseling and mentoring for African teenagers who feel alone. Began as Save the Youth, a community effort. Backed by Artizen. Closed in October 2026."},
     {"org": "Bento.fun", "href": "https://bento.fun", "role": "Software Engineer Intern",
-     "years": "Jun 2026 to Aug 2026", "logo": "/assets/experience/bento.png",
+     "years": "Jun 2026 to Aug 2026",
      "note": "Built the Bento Agent Kit, an MCP server for prediction markets, and the resolution and settlement engine."},
     {"org": "Decentralised.co", "href": "https://www.decentralised.co/", "role": "Research Intern",
-     "years": "Aug 2025 to Nov 2025", "logo": "/assets/experience/decentralised.png",
+     "years": "Aug 2025 to Nov 2025",
      "note": "Wrote charts and threads on agent payments, neobanks and savings rates for a newsletter with 24,000+ subscribers."},
     {"org": "Parallel Research", "href": "https://parallelresearch.substack.com/", "role": "Founder and Head of Research",
-     "years": "Nov 2024 to Oct 2025", "logo": "/assets/experience/parallel.png",
+     "years": "Nov 2024 to Oct 2025",
      "note": "Wrote 35 posts on Solana internals, scaling, MEV and TEEs, with 4,386 views and 124 subscribers, including the Plasma shielded pool design."},
     {"org": "Shoal Research", "href": "https://www.shoal.gg/", "role": "Research Analyst",
-     "years": "Sep 2024 to Jul 2025", "logo": "/assets/experience/shoal.png",
+     "years": "Sep 2024 to Jul 2025",
      "note": "Wrote 7 deep-dive reports, including zkTLS, Fairblock and Sonic SVM, for a list of 2.4K+ subscribers."},
     {"org": "2077 Research", "href": "https://2077.xyz/", "role": "Infrastructure research intern",
-     "years": "May 2024 to Jan 2025", "logo": None, "mark": "77",
+     "years": "May 2024 to Jan 2025",
      "note": "Wrote infrastructure research and advanced tutorials on Ethereum improvement proposals and rollups."},
     {"org": "Coinbase Developer Platform", "href": "https://www.coinbase.com/developer-platform", "role": "User Research Contributor",
-     "years": "Aug 2024 to Sep 2024", "logo": "/assets/experience/coinbase.png",
+     "years": "Aug 2024 to Sep 2024",
      "note": "Built against Paymaster and OnchainKit and reported the integration failures to engineering."},
 ]
 
-EXPERIENCE = [{"role": r["role"], "org": r["org"], "years": r["years"]} for r in NOW + BEFORE]
 
 # Order matters: the three Eigen placings first, then EigenBox and Mind Agent (T8).
 PROJECTS = [
@@ -140,53 +139,6 @@ PROJECTS = [
      "links": [{"label": "GitHub", "href": "https://github.com/owizdom/gatekeeper"}]},
 ]
 
-WRITING = [
-    {"title": "Model cards...collect 'em all?",
-     "href": "https://freesystems.substack.com/p/model-cardscollect-em-all",
-     "venue": "Free Systems, with James Campsie and Andy Hall", "when": "Sep 2026",
-     "note": "The first edition of the Free Systems Model Cards, covering 28 recent models."},
-    {"title": "Confidential Stablecoin Transfers on Plasma: A zk-SNARK-Based Shielded Pool Design",
-     "href": "https://parallelresearch.substack.com/p/confidential-stablecoin-transfers",
-     "venue": "Parallel Research", "when": "Jun 2025",
-     "note": "An open-source design for Plasma. The launch posts drew 42.4K and 38K views on X."},
-    {"title": "Deep dive into EigenCompute internals",
-     "href": "https://x.com/oxwizzdom/status/2050988506197950467",
-     "venue": "X Article, quoted by EigenCloud", "when": "May 2026",
-     "note": "TDX, attestations, KMS, app IDs and verifiable builds. 7.7K views, and EigenCloud's quote post of it drew 4,375."},
-    {"title": "MEV - A Deep Dive",
-     "href": "https://parallelresearch.substack.com/p/mev-a-deep-dive",
-     "venue": "Parallel Research", "when": "Sep 2025",
-     "note": "10,774 words, 1,229 views."},
-    {"title": "The 6.99% without PBS",
-     "href": "https://collective.flashbots.net/t/the-6-99-without-pbs/5283",
-     "venue": "Flashbots Forum", "when": "Sep 2025",
-     "note": "401 views. My forum posts have 1,234 views in total."},
-    {"title": "zkTLS: Verifiable Data Composability",
-     "href": "https://www.shoal.gg/p/zktls-verifiable-data-composability",
-     "venue": "Shoal Research", "when": "Mar 2025", "note": ""},
-    {"title": "Sonic SVM: The HyperGrid Future, Powering TikTok App Layer",
-     "href": "https://www.shoal.gg/p/sonic-svm",
-     "venue": "Shoal Research", "when": "Jan 2025", "note": ""},
-    {"title": "CUDIS: The AI DePIN Smart Ring Democratizing Health Data on Solana",
-     "href": "https://www.shoal.gg/p/cudis-the-ai-depin-smart-ring-democratizing",
-     "venue": "Shoal Research", "when": "Jul 2025", "note": ""},
-    {"title": "Fairblock: Incorruptible Markets and Confidential Stablecoin Rails",
-     "href": "https://www.shoal.gg/p/fairblock-incorruptible-markets-and",
-     "venue": "Shoal Research", "when": "May 2025", "note": ""},
-    {"title": "Fragmetric: Unlocking Composable Restaking with Solana's Token-2022 Standard",
-     "href": "https://www.shoal.gg/p/fragmetric-unlocking-composable-restaking",
-     "venue": "Shoal Research", "when": "May 2025", "note": ""},
-    {"title": "zkPass: Enabling Verifiable Data Composability",
-     "href": "https://www.shoal.gg/p/zkpass-enabling-verifiable-data-composability",
-     "venue": "Shoal Research", "when": "Mar 2025", "note": ""},
-    {"title": "Enso Network: The \"Shortcut\" To Your On-Chain Operations",
-     "href": "https://www.shoal.gg/p/enso-network-shortcuts",
-     "venue": "Shoal Research", "when": "Mar 2025", "note": ""},
-    {"title": "Betting on TEEs: The Infrastructure Thesis for zkSync's Market Edge",
-     "href": "https://parallelresearch.substack.com/p/betting-on-tees-the-infrastructure",
-     "venue": "Parallel Research", "when": "Jun 2025", "note": ""},
-]
-
 RECOGNITION = [
     {"text": "Named author, ECDSA.Fail: Open Autoresearch for Optimizing Elliptic-Curve Point Addition in Shor's Algorithm",
      "href": "https://arxiv.org/abs/2609.09582", "venue": "arXiv", "when": "2026"},
@@ -202,13 +154,6 @@ RECOGNITION = [
     {"text": "From Qbasic to Solidity: How Okechukwu Wisdom is Creating Impact in Blockchain and Beyond",
      "href": "https://rubiestech.org/from-qbasic-to-solidity-how-okechukwu-wisdom-is-creating-impact-in-blockchain-and-beyond/",
      "venue": "Rubies Technologies", "when": "2024"},
-]
-
-STACK = [
-    {"group": "Languages", "items": ["Python", "TypeScript", "Rust", "Go", "C", "Solidity"]},
-    {"group": "Trusted compute", "items": ["Intel TDX", "EigenCompute", "Remote attestation"]},
-    {"group": "Web and data", "items": ["Next.js", "FastAPI", "PostgreSQL", "Redis"]},
-    {"group": "Infrastructure", "items": ["Docker", "Kubernetes", "Linux", "GitHub Actions"]},
 ]
 
 CLAIMS = [
@@ -238,9 +183,4 @@ CLAIMS = [
     {"id": "decentralised-subscribers", "value": "24,000+ subscribers", "source": "https://www.decentralised.co/about", "as_of": AS_OF},
     {"id": "rootward-version", "value": "v0.2.1 (latest release, 2026-08-19)", "source": "https://github.com/owizdom/rootward/releases", "as_of": AS_OF},
     {"id": "gatekeeper-tests", "value": "168 tests (README: npm test)", "source": "https://github.com/owizdom/gatekeeper#readme", "as_of": AS_OF},
-    {"id": "eigencompute-deep-dive-views", "value": "7,731 views (7.7K)", "source": "https://x.com/oxwizzdom/status/2050988506197950467", "as_of": AS_OF},
-    {"id": "eigencompute-deep-dive-quote", "value": "4,375 views", "source": "https://x.com/eigencloud/status/2051737740090466584", "as_of": AS_OF},
-    {"id": "mev-deep-dive-words", "value": "10,774 words", "source": "https://parallelresearch.substack.com/api/v1/archive", "as_of": AS_OF},
-    {"id": "flashbots-forum-views", "value": "401 views on The 6.99% without PBS, 1,234 views across 6 topics",
-     "source": "https://collective.flashbots.net/topics/created-by/wisdom.json", "as_of": AS_OF},
 ]
