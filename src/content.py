@@ -11,7 +11,7 @@ PROFILE = {
     "name": "Wisdom Okechukwu",
     "description": "Researcher and engineer working on AI agents and crypto.",
     "bio": [
-        "I am a researcher and engineer. I'm currently a research fellow at Free Systems Lab, where I study AI agents and built Model Card Explorer.",
+        "I am a researcher and engineer. I'm currently a research fellow at Free Systems Lab, where I work on AI safety research.",
         "Before that I wrote research for Shoal Research, 2077 Research and Decentralised.co, and started Parallel Research. I'm a named author on the ECDSA.Fail paper.",
         "I live in Kigali.",
     ],
