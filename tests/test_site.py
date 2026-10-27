@@ -208,3 +208,9 @@ def test_t9_links_are_well_formed(build, dist):
                 bad.append(f"{page}: {href}")
     assert not bad
 
+
+
+def test_t12_mi_research_listed(build, dist):
+    soup = load(dist, "index.html")
+    links = [a["href"] for a in soup.select("#work a[href]")]
+    assert "https://github.com/owizdom/mi-research" in links, links
