@@ -214,3 +214,11 @@ def test_t12_mi_research_listed(build, dist):
     soup = load(dist, "index.html")
     links = [a["href"] for a in soup.select("#work a[href]")]
     assert "https://github.com/owizdom/mi-research" in links, links
+
+
+def test_t13_im_fell_served_from_the_site(build, dist):
+    css = " ".join(s.get_text() for s in load(dist, "index.html").find_all("style"))
+    assert 'font-family: "IM Fell English"' in css, "body is not set in IM Fell English"
+    for url in re.findall(r"url\((/fonts/[^)]+\.woff2)\)", css) or ["missing"]:
+        assert (dist / url.lstrip("/")).is_file(), f"font file not shipped: {url}"
+    assert "gstatic" not in css and "googleapis" not in css
