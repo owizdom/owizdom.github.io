@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 
-OWNED_PAGES = ["index.html", "about.html", "random/wins.html"]
+OWNED_PAGES = ["index.html"]
 
 def retired_phrases():
     # Phrases that must never appear on the site live in a private file outside the repo.
@@ -57,7 +57,7 @@ def html_pages(dist):
 
 def test_t1_build_succeeds(build, dist):
     assert build.returncode == 0, build.stdout[-2000:] + build.stderr[-2000:]
-    for page in ("index.html", "about.html"):
+    for page in ("index.html",):
         assert (dist / page).is_file(), f"missing dist/{page}"
 
 
@@ -123,10 +123,8 @@ def test_t5_index_is_a_plain_document(build, dist):
     assert len(soup.select("#bio p")) == 3, "About is three short paragraphs"
 
 
-def test_t5_about_sections(build, dist):
-    titles = h2_titles(load(dist, "about.html"))
-    for wanted in ("work experience", "stack", "writing"):
-        assert wanted in titles, titles
+def test_t5_site_is_one_page(build, dist):
+    assert html_pages(dist) == ["index.html"], html_pages(dist)
 
 
 def test_t6_researcher_and_lab_title(build, dist):
@@ -166,7 +164,7 @@ def test_t7_rendered_numbers_are_claims(build, dist):
         allowed |= number_tokens(str(claim["value"]))
 
     bad = []
-    for page, minimum_scopes in (("index.html", 5), ("about.html", 4)):
+    for page, minimum_scopes in (("index.html", 5),):
         soup = load(dist, page)
         for el in soup.select("time, code, [data-literal]"):
             el.decompose()
