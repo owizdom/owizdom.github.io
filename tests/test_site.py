@@ -99,12 +99,23 @@ def h2_titles(soup):
 
 
 def test_t5_index_sections_in_order(build, dist):
-    titles = h2_titles(load(dist, "index.html"))
-    wanted = ["now", "selected work", "before", "recognition"]
-    missing = [w for w in wanted if w not in titles]
-    assert not missing, titles
-    positions = [titles.index(w) for w in wanted]
-    assert positions == sorted(positions), titles
+    soup = load(dist, "index.html")
+    assert h2_titles(soup) == ["contact", "about"], h2_titles(soup)
+    ids = [el["id"] for el in soup.select("#now, #before, #work, #recognition")]
+    assert ids == ["now", "before", "work", "recognition"], ids
+
+
+def test_t5_index_is_a_plain_document(build, dist):
+    soup = load(dist, "index.html")
+    text = visible_text(load(dist, "index.html"))
+    for intro in ("Some things I work on:", "Some things I did before:", "Some things I've built:"):
+        assert intro in text, intro
+    assert not soup.select(".card, .chip, nav"), "card layout still on the homepage"
+    assert not soup.select('link[href*="fonts.googleapis.com"]'), "web fonts still loaded"
+    photo = soup.select_one("img.photo")
+    assert photo is not None and photo.get("width") == "120", photo
+    assert soup.find(id="contact") is not None
+    assert soup.select_one('#contact a[href="/about"]') is not None, "About page unreachable"
 
 
 def test_t5_about_sections(build, dist):
