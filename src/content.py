@@ -29,6 +29,9 @@ PROFILE = {
 }
 
 NOW = [
+    {"org": "uli", "href": "https://getuli.tech", "role": "Founder",
+     "years": "2026 to now",
+     "note": "Trains a small custom model on a team's own data, in the idle time of a Mac that already serves the model. Built on the open-source engine Darkbloom runs. Private alpha coming soon."},
     {"org": "Free Systems Lab", "href": "https://freesystems.net/", "role": "Research Fellow",
      "years": "2026 to now",
      "note": "Working on AI agents, including Sticky Fingers, a controlled study of whether payment rails stop a hijacked agent from moving money. Built Model Card Explorer and the Free Systems Model Cards."},
