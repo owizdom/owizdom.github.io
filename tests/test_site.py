@@ -140,6 +140,11 @@ def test_t6_researcher_and_lab_title(build, dist):
     lab = [r for r in rows if "Free Systems Lab" in r]
     assert lab, rows
     assert all("Research Fellow" in r for r in lab), lab
+    uli = [r for r in rows if "uli" in r.split(",")[0]]
+    assert uli and rows[0] == uli[0], "uli is the first thing I work on: %r" % rows
+    assert "Founder at uli" in uli[0], uli
+    link = now.select_one('[data-role-row] a[href="https://getuli.tech"]')
+    assert link is not None, "the uli row links to getuli.tech"
 
 
 def test_t7_claims_ledger_is_complete():
